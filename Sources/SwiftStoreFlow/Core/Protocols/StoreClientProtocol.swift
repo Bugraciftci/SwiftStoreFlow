@@ -18,6 +18,7 @@ public protocol EntitlementCacheProtocol: Sendable {
 /// Structured paywall funnel events for analytics pipelines (Firebase, TelemetryDeck, Amplitude, etc.).
 public enum PaywallAnalyticsEvent: Equatable, Sendable {
     case paywallViewed(placement: String)
+    case experimentExposed(experimentID: String, variantID: String, isHoldout: Bool)
     case planSelected(productID: String)
     case purchaseStarted(productID: String)
     case purchaseSucceeded(productID: String, tier: EntitlementTier)

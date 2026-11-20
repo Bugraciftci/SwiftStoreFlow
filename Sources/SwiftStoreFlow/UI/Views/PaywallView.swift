@@ -1,33 +1,39 @@
 import SwiftUI
 
-/// Adaptive, HIG-compliant SwiftUI Paywall view driven by PaywallViewModel.
+/// Adaptive, HIG-compliant SwiftUI Paywall supporting A/B templates, skeleton loaders, and billing alerts.
 public struct PaywallView: View {
     @ObservedObject private var viewModel: PaywallViewModel
-    private let headline: String
     private let benefits: [String]
+    private let milestones: [TrialTimelineMilestone]
+    private let featureRows: [PaywallFeatureRow]
     private let onDismiss: (() -> Void)?
 
     public init(
         viewModel: PaywallViewModel,
-        headline: String = "Unlock Pro Access",
         benefits: [String] = [
             "Unlimited AI generations & priority processing",
             "Offline-first encrypted Keychain entitlements",
             "Sync across iPhone, iPad, and CarPlay"
         ],
+        milestones: [TrialTimelineMilestone] = TrialTimelineMilestone.defaultSevenDayTrial,
+        featureRows: [PaywallFeatureRow] = FeatureComparisonMatrixView.defaultRows,
         onDismiss: (() -> Void)? = nil
     ) {
         self.viewModel = viewModel
-        self.headline = headline
         self.benefits = benefits
+        self.milestones = milestones
+        self.featureRows = featureRows
         self.onDismiss = onDismiss
     }
 
     public var body: some View {
         ScrollView {
-            VStack(spacing: 24) {
+            VStack(spacing: 22) {
                 headerSection
-                benefitsSection
+                if viewModel.showsBillingWarningBanner {
+                    billingAlertBanner
+                }
+                templateBodySection
                 plansSection
                 ctaSection
             }
@@ -45,7 +51,7 @@ public struct PaywallView: View {
                 .foregroundStyle(Color.accentColor)
                 .accessibilityHidden(true)
 
-            Text(headline)
+            Text(viewModel.headline)
                 .font(.title.bold())
                 .multilineTextAlignment(.center)
 
@@ -58,17 +64,39 @@ public struct PaywallView: View {
         }
     }
 
-    private var benefitsSection: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            ForEach(benefits, id: \.self) { benefit in
-                Label(benefit, systemImage: "checkmark.seal.fill")
-                    .font(.subheadline)
-                    .foregroundStyle(.primary)
-            }
-        }
+    private var billingAlertBanner: some View {
+        Label(
+            "Billing issue detected. Update your Apple ID payment method to prevent interruption.",
+            systemImage: "creditcard.trianglebadge.exclamationmark"
+        )
+        .font(.footnote.weight(.medium))
+        .foregroundStyle(.orange)
+        .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(16)
-        .background(Color.secondary.opacity(0.08), in: RoundedRectangle(cornerRadius: 14))
+        .background(Color.orange.opacity(0.12), in: RoundedRectangle(cornerRadius: 12))
+    }
+
+    @ViewBuilder
+    private var templateBodySection: some View {
+        switch viewModel.templateStyle {
+        case .standardCards:
+            VStack(alignment: .leading, spacing: 10) {
+                ForEach(benefits, id: \.self) { benefit in
+                    Label(benefit, systemImage: "checkmark.seal.fill")
+                        .font(.subheadline)
+                        .foregroundStyle(.primary)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(16)
+            .background(Color.secondary.opacity(0.08), in: RoundedRectangle(cornerRadius: 14))
+
+        case .trialTimeline:
+            TrialTimelineView(milestones: milestones)
+
+        case .featureMatrix:
+            FeatureComparisonMatrixView(rows: featureRows)
+        }
     }
 
     private var plansSection: some View {
@@ -76,8 +104,7 @@ public struct PaywallView: View {
 
         return VStack(spacing: 12) {
             if viewModel.phase == .loading && viewModel.plans.isEmpty {
-                ProgressView("Loading plans...")
-                    .padding(.vertical, 24)
+                PaywallSkeletonView()
             } else {
                 ForEach(viewModel.plans) { plan in
                     PlanOptionCard(
@@ -101,7 +128,7 @@ public struct PaywallView: View {
                     if viewModel.phase == .purchasing {
                         ProgressView()
                     }
-                    Text(viewModel.phase == .purchased ? "Pro Active" : "Continue")
+                    Text(viewModel.phase == .purchased ? "Pro Active" : viewModel.ctaTitle)
                         .font(.headline)
                 }
                 .frame(maxWidth: .infinity)

@@ -26,6 +26,7 @@ public struct SubscriptionPlan: Identifiable, Equatable, Hashable, Sendable, Cod
     public let billingPeriod: BillingPeriod
     public let badgeText: String?
     public let trialDescription: String?
+    public let promotionalOffer: PromotionalOfferMetadata?
     public let tier: EntitlementTier
 
     public init(
@@ -37,6 +38,7 @@ public struct SubscriptionPlan: Identifiable, Equatable, Hashable, Sendable, Cod
         billingPeriod: BillingPeriod,
         badgeText: String? = nil,
         trialDescription: String? = nil,
+        promotionalOffer: PromotionalOfferMetadata? = nil,
         tier: EntitlementTier = .pro
     ) {
         self.id = id
@@ -47,6 +49,7 @@ public struct SubscriptionPlan: Identifiable, Equatable, Hashable, Sendable, Cod
         self.billingPeriod = billingPeriod
         self.badgeText = badgeText
         self.trialDescription = trialDescription
+        self.promotionalOffer = promotionalOffer
         self.tier = tier
     }
 
