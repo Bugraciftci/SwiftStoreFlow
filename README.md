@@ -5,7 +5,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Swift_6.0-F05138?style=for-the-badge&logo=swift&logoColor=white" alt="Swift 6" />
   <img src="https://img.shields.io/badge/iOS_17%2B_%7C_macOS_14%2B-0071E3?style=for-the-badge&logo=apple&logoColor=white" alt="Platforms" />
-  <img src="https://img.shields.io/badge/Tests-21_Passing-22C55E?style=for-the-badge" alt="Tests" />
+  <img src="https://img.shields.io/badge/Tests-24_Passing-22C55E?style=for-the-badge" alt="Tests" />
   <img src="https://img.shields.io/badge/License-MIT-38BDF8?style=for-the-badge" alt="License" />
 </p>
 
@@ -31,6 +31,7 @@ flowchart LR
 - **Deterministic A/B Paywall Engine (`ExperimentBucketer.swift`):** Stateless 64-bit FNV-1a bucketing with weighted variants, holdout cohorts, QA/TestFlight overrides, and automatic exposure tracking.
 - **Live Transaction Stream & JWS Validation (`TransactionObserverActor.swift`):** Multi-consumer `AsyncStream<EntitlementUpdateEvent>` bridging StoreKit 2 updates through a pluggable `ReceiptValidatorProtocol` with `.strictOnline` or `.allowCachedGraceWindow` offline policies.
 - **3 Adaptive SwiftUI Paywall Templates:** `StandardCards`, `TrialTimelineView` (Day 1 → Reminder → Billing), and `FeatureComparisonMatrixView` + animated `PaywallSkeletonView` and billing-retry alert banner.
+- **Churn Recovery & Win-Back Engine (`WinbackOfferEngine.swift`, `PaywallAnalyticsInspectorView.swift`):** Deterministic offer recommendation engine for auto-renew cancellations, billing retry bridges, and recent vs. deep lapsed subscribers, paired with a Chi-Square Sample Ratio Mismatch (SRM) guard and SwiftUI A/B telemetry overlay.
 - **Strict Swift 6 Concurrency:** Full `Sendable` value types, actor-isolated purchase deduplication, Keychain storage (`kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`), and zero data-race warnings.
 
 ## Quick Usage
