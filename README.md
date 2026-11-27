@@ -3,13 +3,18 @@
 </div>
 
 <p align="center">
+  <a href="https://github.com/Bugraciftci/SwiftStoreFlow/actions/workflows/ci.yml"><img src="https://github.com/Bugraciftci/SwiftStoreFlow/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://github.com/Bugraciftci/SwiftStoreFlow/releases/tag/v2.0.0"><img src="https://img.shields.io/badge/Release-v2.0.0-0EA5E9?style=for-the-badge" alt="Release v2.0.0" /></a>
+  <a href="https://bugraciftci.github.io/SwiftStoreFlow/documentation/swiftstoreflow/"><img src="https://img.shields.io/badge/DocC-API_Docs-6366F1?style=for-the-badge&logo=swift&logoColor=white" alt="DocC" /></a>
   <img src="https://img.shields.io/badge/Swift_6.0-F05138?style=for-the-badge&logo=swift&logoColor=white" alt="Swift 6" />
   <img src="https://img.shields.io/badge/iOS_17%2B_%7C_macOS_14%2B-0071E3?style=for-the-badge&logo=apple&logoColor=white" alt="Platforms" />
-  <img src="https://img.shields.io/badge/Tests-24_Passing-22C55E?style=for-the-badge" alt="Tests" />
+  <img src="https://img.shields.io/badge/Tests-26_Passing-22C55E?style=for-the-badge" alt="Tests" />
   <img src="https://img.shields.io/badge/License-MIT-38BDF8?style=for-the-badge" alt="License" />
 </p>
 
 Production-grade **Swift 6 & SwiftUI StoreKit 2** monetization, A/B paywall experimentation, and offline-first Keychain entitlement architecture extracted from commercial App Store apps.
+
+> 📚 **Interactive API Reference:** [SwiftStoreFlow DocC Documentation](https://bugraciftci.github.io/SwiftStoreFlow/documentation/swiftstoreflow/)
 
 ## Architecture
 
@@ -70,10 +75,12 @@ struct AppRootView: View {
 }
 ```
 
-## Running Tests
+## Running Tests & Benchmarks
+
+26 XCTest cases covering actor-isolated purchase deduplication (12-task contention stress test), 10k-iteration FNV-1a bucketing determinism, Keychain offline entitlements, Win-Back offer rules, and Chi-Square SRM detection:
 
 ```bash
-swift test
+swift test --enable-code-coverage
 ```
 
 ## License

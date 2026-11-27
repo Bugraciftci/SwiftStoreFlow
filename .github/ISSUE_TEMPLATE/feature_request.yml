@@ -1,0 +1,19 @@
+name: Feature Request
+description: Suggest a new capability or API enhancement
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What use case or bottleneck does this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed API / Design
+      description: Suggested Swift protocol/actor surface or behavior.
+    validations:
+      required: true
